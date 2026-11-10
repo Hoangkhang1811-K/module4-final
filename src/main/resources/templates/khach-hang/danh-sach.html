@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Khách hàng')}"></head>
+<body>
+<div class="app-shell">
+    <aside th:replace="~{fragments/layout :: sidebar('customers')}"></aside>
+    <main class="main-content">
+        <header th:replace="~{fragments/layout :: topbar}"></header>
+        <section class="page-wrap">
+            <div class="page-heading">
+                <div><div class="eyebrow">QUẢN LÝ QUAN HỆ</div><h1>Khách hàng</h1><p class="muted">Danh bạ khách hàng sử dụng trong các giao dịch nhà đất.</p></div>
+                <a class="button button-primary" th:href="@{/khach-hang/them-moi}"><span class="button-plus">＋</span> Tạo khách hàng</a>
+            </div>
+            <div th:if="${thongBao}" class="toast-success"><span class="toast-check">✓</span><span th:text="${thongBao}"></span></div>
+            <div th:if="${loiThongBao}" class="toast-error"><span class="toast-error-icon">!</span><span th:text="${loiThongBao}"></span></div>
+            <div class="stats-grid customer-stats">
+                <article class="stat-card"><div class="stat-top"><span class="stat-icon icon-blue">♙</span><span class="stat-label">TỔNG KHÁCH HÀNG</span></div><strong th:text="${#lists.size(khachHangList)}">0</strong><span class="stat-foot">Hồ sơ khách hàng trong hệ thống</span></article>
+                <article class="stat-card"><div class="stat-top"><span class="stat-icon icon-green">✓</span><span class="stat-label">DỮ LIỆU LIÊN HỆ</span></div><strong>Đầy đủ</strong><span class="stat-foot">Số điện thoại và email được lưu cùng hồ sơ</span></article>
+                <article class="stat-card stat-highlight"><div class="stat-top"><span class="stat-icon icon-white">↗</span><span class="stat-label">SỬ DỤNG TRONG GIAO DỊCH</span></div><strong>Liên kết trực tiếp</strong><span class="stat-foot">Khách hàng mới có thể chọn khi tạo giao dịch</span></article>
+            </div>
+            <section class="panel">
+                <div class="panel-heading"><div><h2>Danh bạ khách hàng</h2><p class="muted">Thông tin liên hệ và mã khách hàng.</p></div><span class="result-count"><span th:text="${#lists.size(khachHangList)}">0</span> khách hàng</span></div>
+                <div class="table-scroll"><table><thead><tr><th>MÃ KHÁCH HÀNG</th><th>TÊN KHÁCH HÀNG</th><th>SỐ ĐIỆN THOẠI</th><th>EMAIL</th><th></th></tr></thead>
+                    <tbody><tr th:each="kh : ${khachHangList}">
+                        <td><span class="code-pill" th:text="${kh.maKhachHang}">KH-001</span></td>
+                        <td><div class="customer-cell"><span class="avatar" th:text="${#strings.substring(kh.tenKhachHang, 0, 1)}">N</span><div><strong th:text="${kh.tenKhachHang}">Tên khách hàng</strong><small>Khách hàng bất động sản</small></div></div></td>
+                        <td><a class="contact-link" th:href="'tel:' + ${kh.soDienThoai}" th:text="${kh.soDienThoai}">0901234567</a></td>
+                        <td><a class="contact-link" th:href="'mailto:' + ${kh.email}" th:text="${kh.email}">email@example.com</a></td>
+                        <td><form class="row-delete-form" th:action="@{/khach-hang/{id}/xoa(id=${kh.maKhachHang})}" method="post" onsubmit="return confirm('Bạn có chắc muốn xóa khách hàng này không? Nếu khách hàng có giao dịch, hệ thống sẽ giữ nguyên hồ sơ.');"><button class="row-delete-button" type="submit" aria-label="Xóa khách hàng" title="Xóa khách hàng">Xóa</button></form></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(khachHangList)}"><td colspan="5"><div class="empty-state"><span>♙</span><strong>Chưa có khách hàng</strong><p>Tạo hồ sơ khách hàng đầu tiên để bắt đầu ghi nhận giao dịch.</p></div></td></tr>
+                    </tbody>
+                </table></div>
+                <div class="table-footer"><span>Đang hiển thị <strong th:text="${#lists.size(khachHangList)}">0</strong> khách hàng</span><a class="contact-link" th:href="@{/}">Quay lại giao dịch →</a></div>
+            </section>
+            <footer class="page-footer">© 2026 EstateFlow <span>·</span> Quản lý bất động sản thông minh</footer>
+        </section>
+    </main>
+</div>
+</body>
+</html>

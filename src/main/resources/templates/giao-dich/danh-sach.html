@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Giao dịch bất động sản')}"></head>
+<body>
+<div class="app-shell">
+    <aside th:replace="~{fragments/layout :: sidebar('transactions')}"></aside>
+    <main class="main-content">
+        <header th:replace="~{fragments/layout :: topbar}"></header>
+        <section class="page-wrap">
+            <div class="page-heading">
+                <div><div class="eyebrow">QUẢN LÝ KINH DOANH</div><h1>Giao dịch nhà đất</h1><p class="muted">Theo dõi và quản lý các giao dịch bất động sản của bạn.</p></div>
+                <a class="button button-primary" th:href="@{/giao-dich/them-moi}"><span class="button-plus">＋</span> Thêm giao dịch</a>
+            </div>
+            <div th:if="${thongBao}" class="toast-success"><span class="toast-check">✓</span><span th:text="${thongBao}"></span></div>
+            <div class="stats-grid">
+                <article class="stat-card"><div class="stat-top"><span class="stat-icon icon-blue">↗</span><span class="stat-label">TỔNG GIAO DỊCH</span></div><strong th:text="${tongSoGiaoDich}">0</strong><span class="stat-foot">Giao dịch đang được lưu trữ</span></article>
+                <article class="stat-card"><div class="stat-top"><span class="stat-icon icon-green">⌂</span><span class="stat-label">LOẠI DỊCH VỤ</span></div><strong>02</strong><span class="stat-foot">Đất · Nhà và đất</span></article>
+                <article class="stat-card stat-highlight"><div class="stat-top"><span class="stat-icon icon-white">◷</span><span class="stat-label">DỮ LIỆU CẬP NHẬT</span></div><strong>Trực tiếp</strong><span class="stat-foot">Thông tin đồng bộ từ cơ sở dữ liệu</span></article>
+            </div>
+            <section class="panel">
+                <div class="panel-heading"><div><h2>Danh sách giao dịch</h2><p class="muted">Tìm kiếm theo khách hàng hoặc loại dịch vụ.</p></div><span class="result-count"><span th:text="${#lists.size(giaoDichList)}">0</span> kết quả</span></div>
+                <form class="search-bar" method="get" th:action="@{/}">
+                    <label class="search-field"><span class="field-icon">⌕</span><input type="search" name="tenKhachHang" placeholder="Tìm theo tên khách hàng..." th:value="${tenKhachHang}"></label>
+                    <label class="select-field"><select name="loaiDichVu"><option value="">Tất cả dịch vụ</option><option th:each="loai : ${loaiDichVuOptions}" th:value="${loai}" th:text="${loai.tenHienThi}" th:selected="${loai == loaiDichVu}"></option></select></label>
+                    <button class="button button-dark" type="submit">Tìm kiếm <span>→</span></button>
+                    <a class="button button-quiet" th:if="${tenKhachHang != '' or loaiDichVu != null}" th:href="@{/}">Xóa lọc</a>
+                </form>
+                <div class="table-scroll">
+                    <table><thead><tr><th>MÃ GIAO DỊCH</th><th>KHÁCH HÀNG</th><th>LOẠI DỊCH VỤ</th><th>NGÀY GIAO DỊCH</th><th>ĐƠN GIÁ / M²</th><th>DIỆN TÍCH</th><th></th></tr></thead>
+                        <tbody>
+                        <tr th:each="gd : ${giaoDichList}">
+                            <td><span class="code-pill" th:text="${gd.maGiaoDich}">MGD-0001</span></td>
+                            <td><div class="customer-cell"><span class="avatar" th:text="${#strings.substring(gd.khachHang.tenKhachHang, 0, 1)}">N</span><div><strong th:text="${gd.khachHang.tenKhachHang}">Tên khách hàng</strong><small th:text="${gd.khachHang.maKhachHang}">KH-001</small></div></div></td>
+                            <td><span class="service-badge" th:classappend="${gd.loaiDichVu.name() == 'DAT' ? ' badge-land' : ' badge-home'}" th:text="${gd.loaiDichVu.tenHienThi}">Nhà và đất</span></td>
+                            <td th:text="${#temporals.format(gd.ngayGiaoDich, 'dd/MM/yyyy')}">01/01/2027</td>
+                            <td class="number-cell" th:text="${#numbers.formatDecimal(gd.donGia, 1, 'POINT', 0, 'COMMA') + ' ₫'}">24.500.000 ₫</td>
+                            <td class="number-cell" th:text="${#numbers.formatDecimal(gd.dienTich, 1, 'POINT', 2, 'COMMA') + ' m²'}">96,00 m²</td>
+                            <td><a class="detail-link" th:href="@{/giao-dich/{id}(id=${gd.maGiaoDich})}">Chi tiết <span>↗</span></a></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(giaoDichList)}"><td colspan="7"><div class="empty-state"><span>⌕</span><strong>Chưa tìm thấy giao dịch</strong><p>Thử thay đổi điều kiện tìm kiếm hoặc thêm một giao dịch mới.</p></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-footer"><span>Đang hiển thị <strong th:text="${#lists.size(giaoDichList)}">0</strong> giao dịch</span><span>Dữ liệu được lưu an toàn trong hệ thống</span></div>
+            </section>
+            <footer class="page-footer">© 2026 EstateFlow <span>·</span> Quản lý bất động sản thông minh</footer>
+        </section>
+    </main>
+</div>
+</body>
+</html>

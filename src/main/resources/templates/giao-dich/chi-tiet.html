@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Chi tiết giao dịch')}"></head>
+<body>
+<div class="app-shell">
+    <aside th:replace="~{fragments/layout :: sidebar('transactions')}"></aside>
+    <main class="main-content">
+        <header th:replace="~{fragments/layout :: topbar}"></header>
+        <section class="page-wrap form-page">
+            <div class="breadcrumbs"><a th:href="@{/}">Giao dịch nhà đất</a><span>/</span><span>Chi tiết</span></div>
+            <div class="page-heading"><div><div class="eyebrow">HỒ SƠ GIAO DỊCH</div><h1>Chi tiết giao dịch</h1><p class="muted">Thông tin đầy đủ về bất động sản và khách hàng.</p></div><span class="service-badge detail-status" th:classappend="${giaoDich.loaiDichVu.name() == 'DAT' ? ' badge-land' : ' badge-home'}" th:text="${giaoDich.loaiDichVu.tenHienThi}">Nhà và đất</span></div>
+            <section class="panel detail-panel">
+                <div class="detail-hero"><div><span class="detail-id-label">MÃ GIAO DỊCH</span><h2 th:text="${giaoDich.maGiaoDich}">MGD-0001</h2></div><span class="detail-icon">⌂</span></div>
+                <div class="detail-section"><div class="form-section-title"><span class="section-number">01</span><div><h2>Thông tin bất động sản</h2><p>Thông tin giao dịch được ghi nhận trong hệ thống.</p></div></div>
+                    <div class="detail-grid"><div class="detail-item"><span>Loại dịch vụ</span><strong th:text="${giaoDich.loaiDichVu.tenHienThi}">Nhà và đất</strong></div><div class="detail-item"><span>Ngày giao dịch</span><strong th:text="${#temporals.format(giaoDich.ngayGiaoDich, 'dd/MM/yyyy')}">01/01/2027</strong></div><div class="detail-item"><span>Đơn giá</span><strong th:text="${#numbers.formatDecimal(giaoDich.donGia, 1, 'POINT', 0, 'COMMA') + ' VND / m²'}">24.500.000 VND / m²</strong></div><div class="detail-item"><span>Diện tích</span><strong th:text="${#numbers.formatDecimal(giaoDich.dienTich, 1, 'POINT', 2, 'COMMA') + ' m²'}">96,00 m²</strong></div></div>
+                </div>
+                <div class="detail-section customer-detail"><div class="form-section-title"><span class="section-number">02</span><div><h2>Thông tin khách hàng</h2><p>Khách hàng liên kết với giao dịch này.</p></div></div>
+                    <div class="customer-profile"><span class="avatar avatar-large" th:text="${#strings.substring(giaoDich.khachHang.tenKhachHang, 0, 1)}">N</span><div><strong th:text="${giaoDich.khachHang.tenKhachHang}">Nguyễn Minh Anh</strong><small th:text="${giaoDich.khachHang.maKhachHang}">KH-001</small></div></div>
+                    <div class="detail-grid"><div class="detail-item"><span>Số điện thoại</span><a th:href="'tel:' + ${giaoDich.khachHang.soDienThoai}" th:text="${giaoDich.khachHang.soDienThoai}">0901234567</a></div><div class="detail-item"><span>Email</span><a th:href="'mailto:' + ${giaoDich.khachHang.email}" th:text="${giaoDich.khachHang.email}">minhanh@example.com</a></div></div>
+                </div>
+                <div class="form-actions detail-actions"><a class="button button-quiet" th:href="@{/}"><span>←</span> Quay lại danh sách</a><form th:action="@{/giao-dich/{id}/xoa(id=${giaoDich.maGiaoDich})}" method="post" onsubmit="if (!confirm('Bạn có muốn xóa giao dịch này không?')) { window.location.href='/'; return false; } return true;"><button class="button button-danger" type="submit"><span>⌫</span> Xóa giao dịch</button></form></div>
+            </section>
+            <footer class="page-footer">© 2026 EstateFlow <span>·</span> Quản lý bất động sản thông minh</footer>
+        </section>
+    </main>
+</div>
+</body>
+</html>

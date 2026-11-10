@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f5f7fb">
+    <title th:text="${title + ' | EstateFlow'}">EstateFlow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<aside th:fragment="sidebar(active)" class="sidebar">
+    <a class="brand" th:href="@{/}"><span class="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 15.2 16 6l11 9.2v11H5v-11Z"/><path d="M12 26v-8h8v8M3 15.5l13-11 13 11"/></svg></span><span>estate<span class="brand-light">flow</span><small>PROPERTY MANAGEMENT</small></span></a>
+    <div class="nav-caption">KHÔNG GIAN LÀM VIỆC</div>
+    <nav>
+        <a class="nav-link" th:classappend="${active == 'transactions' ? ' active' : ''}" th:href="@{/}"><span class="nav-icon">▤</span>Giao dịch<span class="nav-arrow">›</span></a>
+        <a class="nav-link" th:classappend="${active == 'customers' ? ' active' : ''}" th:href="@{/khach-hang}"><span class="nav-icon">♙</span>Khách hàng<span class="nav-arrow">›</span></a>
+    </nav>
+    <div class="sidebar-bottom"><div class="help-card"><span class="help-icon">✦</span><strong>Quản lý dễ dàng</strong><p>Giao dịch và hồ sơ khách hàng được tập trung tại một nơi.</p><a th:href="@{/khach-hang}">Xem khách hàng <span>→</span></a></div><div class="user-card"><span class="user-avatar">EF</span><div><strong>Quản trị viên</strong><small>Hệ thống nội bộ</small></div><span class="user-menu">···</span></div></div>
+</aside>
+<header th:fragment="topbar" class="topbar"><div class="topbar-breadcrumb">Không gian làm việc <span>/</span> <strong>EstateFlow</strong></div><div class="topbar-right"><span class="system-status"><i></i> Hệ thống hoạt động</span><span class="topbar-divider"></span><span class="topbar-date" th:text="${#temporals.format(#temporals.createToday(), 'EEEE, dd/MM/yyyy')}">Thứ Hai, 01/01/2026</span><span class="topbar-avatar">EF</span></div></header>
+</body>
+</html>

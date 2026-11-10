@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Thêm giao dịch mới')}"></head>
+<body>
+<div class="app-shell">
+    <aside th:replace="~{fragments/layout :: sidebar('transactions')}"></aside>
+    <main class="main-content">
+        <header th:replace="~{fragments/layout :: topbar}"></header>
+        <section class="page-wrap form-page">
+            <div class="breadcrumbs"><a th:href="@{/}">Giao dịch nhà đất</a><span>/</span><span>Thêm mới</span></div>
+            <div class="page-heading"><div><div class="eyebrow">GIAO DỊCH MỚI</div><h1>Thêm giao dịch</h1><p class="muted">Điền thông tin bên dưới để tạo giao dịch bất động sản.</p></div></div>
+            <form class="panel form-panel" th:action="@{/giao-dich/them-moi}" th:object="${giaoDichForm}" method="post">
+                <div class="form-section-title"><span class="section-number">01</span><div><h2>Thông tin giao dịch</h2><p>Các trường có dấu <b>*</b> là bắt buộc.</p></div></div>
+                <div class="form-grid">
+                    <div class="form-group"><label for="maGiaoDich">Mã giao dịch <b>*</b></label><input id="maGiaoDich" type="text" th:field="*{maGiaoDich}" placeholder="Ví dụ: MGD-0001" maxlength="8" autocomplete="off"><small class="field-hint">Định dạng MGD-XXXX, gồm 4 chữ số.</small><small class="field-error" th:if="${#fields.hasErrors('maGiaoDich')}" th:errors="*{maGiaoDich}"></small></div>
+                    <div class="form-group"><label for="maKhachHang">Khách hàng <b>*</b></label><select id="maKhachHang" th:field="*{maKhachHang}"><option value="">Chọn khách hàng</option><option th:each="kh : ${khachHangList}" th:value="${kh.maKhachHang}" th:text="${kh.tenKhachHang + ' · ' + kh.soDienThoai}"></option></select><small class="field-hint">Cần thêm hồ sơ? <a class="inline-link" th:href="@{/khach-hang/them-moi}">Tạo khách hàng mới</a></small><small class="field-error" th:if="${#fields.hasErrors('maKhachHang')}" th:errors="*{maKhachHang}"></small></div>
+                    <div class="form-group"><label for="loaiDichVu">Loại dịch vụ <b>*</b></label><select id="loaiDichVu" th:field="*{loaiDichVu}"><option value="">Chọn loại dịch vụ</option><option th:each="loai : ${loaiDichVuOptions}" th:value="${loai}" th:text="${loai.tenHienThi}"></option></select><small class="field-error" th:if="${#fields.hasErrors('loaiDichVu')}" th:errors="*{loaiDichVu}"></small></div>
+                    <div class="form-group"><label for="ngayGiaoDich">Ngày giao dịch <b>*</b></label><input id="ngayGiaoDich" type="date" th:field="*{ngayGiaoDich}" th:attr="min=${#temporals.format(#temporals.createToday().plusDays(1), 'yyyy-MM-dd')}"><small class="field-hint">Ngày giao dịch phải sau ngày hôm nay.</small><small class="field-error" th:if="${#fields.hasErrors('ngayGiaoDich')}" th:errors="*{ngayGiaoDich}"></small></div>
+                    <div class="form-group"><label for="donGia">Đơn giá <b>*</b></label><div class="input-suffix"><input id="donGia" type="number" th:field="*{donGia}" min="500000.01" step="0.01" placeholder="Ví dụ: 24500000"><span>VND / m²</span></div><small class="field-hint">Đơn giá phải lớn hơn 500.000 VND/m².</small><small class="field-error" th:if="${#fields.hasErrors('donGia')}" th:errors="*{donGia}"></small></div>
+                    <div class="form-group"><label for="dienTich">Diện tích <b>*</b></label><div class="input-suffix"><input id="dienTich" type="number" th:field="*{dienTich}" min="20.01" step="0.01" placeholder="Ví dụ: 96"><span>m²</span></div><small class="field-hint">Diện tích phải lớn hơn 20 m².</small><small class="field-error" th:if="${#fields.hasErrors('dienTich')}" th:errors="*{dienTich}"></small></div>
+                </div>
+                <div class="form-actions"><a class="button button-quiet" th:href="@{/}">Hủy</a><button class="button button-primary" type="submit">Tạo giao dịch <span>→</span></button></div>
+            </form>
+            <footer class="page-footer">© 2026 EstateFlow <span>·</span> Quản lý bất động sản thông minh</footer>
+        </section>
+    </main>
+</div>
+</body>
+</html>
